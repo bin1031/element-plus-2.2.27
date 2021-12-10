@@ -1,13 +1,10 @@
 import { defineComponent, h, inject } from 'vue'
 import { addUnit } from '@element-plus/utils/util'
 import { getNormalizedProps } from '@element-plus/utils/vnode'
-import { elDescriptionsKey } from './token'
+import { elDescriptionsKey } from '@element-plus/tokens'
 
 import type { VNode } from 'vue'
-import type {
-  IDescriptionsInject,
-  IDescriptionsItemInject,
-} from './descriptions.type'
+import type { DescriptionsProps, IDescriptionsItemInject } from './descriptions'
 
 export default defineComponent({
   name: 'ElDescriptionsCell',
@@ -23,7 +20,7 @@ export default defineComponent({
     },
   },
   setup() {
-    const descriptions = inject(elDescriptionsKey, {} as IDescriptionsInject)
+    const descriptions = inject(elDescriptionsKey, {} as DescriptionsProps)
 
     return {
       descriptions,
