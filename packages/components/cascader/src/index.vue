@@ -77,7 +77,12 @@
           </template>
         </el-input>
 
-        <div v-if="multiple" ref="tagWrapper" class="el-cascader__tags">
+        <div
+          v-if="multiple"
+          ref="tagWrapper"
+          class="el-cascader__tags"
+          :style="tagStyle"
+        >
           <el-tag
             v-for="tag in presentTags"
             :key="tag.key"
@@ -347,8 +352,20 @@ export default defineComponent({
     )
     const realSize = useSize()
     const tagSize = computed(() =>
-      ['small'].includes(realSize.value) ? 'small' : 'default'
+      realSize.value === 'small' ? 'small' : 'default'
     )
+    const tagStyle = computed(() => {
+      let right = 40
+      if (realSize.value === 'large') {
+        right = 44
+      }
+      if (realSize.value === 'small') {
+        right = 34
+      }
+      return {
+        right: `${right}px`,
+      }
+    })
     const multiple = computed(() => !!props.props.multiple)
     const readonly = computed(() => !props.filterable || multiple.value)
     const searchKeyword = computed(() =>
@@ -527,9 +544,16 @@ export default defineComponent({
 
       if (tagWrapperEl) {
         const { offsetHeight } = tagWrapperEl
+        const _offsetHeight =
+          offsetHeight +
+          (realSize.value === 'small'
+            ? 0
+            : realSize.value === 'default'
+            ? 2
+            : 6)
         const height =
           presentTags.value.length > 0
-            ? `${Math.max(offsetHeight + 6, inputInitialHeight)}px`
+            ? `${Math.max(_offsetHeight, inputInitialHeight)}px`
             : `${inputInitialHeight}px`
         inputInner.style.height = height
         updatePopperPosition()
@@ -703,6 +727,7 @@ export default defineComponent({
       isOnComposition,
       realSize,
       tagSize,
+      tagStyle,
       multiple,
       readonly,
       clearBtnVisible,
