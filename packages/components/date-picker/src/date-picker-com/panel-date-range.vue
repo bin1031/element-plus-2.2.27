@@ -568,7 +568,6 @@ export default defineComponent({
             .date(parsedValueD.date())
           if (!props.unlinkPanels) {
             rightDate.value = parsedValueD.add(1, 'month')
-            maxDate.value = minDate.value.add(1, 'month')
           }
         } else {
           rightDate.value = parsedValueD
@@ -578,7 +577,6 @@ export default defineComponent({
             .date(parsedValueD.date())
           if (!props.unlinkPanels) {
             leftDate.value = parsedValueD.subtract(1, 'month')
-            minDate.value = maxDate.value.subtract(1, 'month')
           }
         }
       }
