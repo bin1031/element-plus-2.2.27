@@ -140,14 +140,14 @@ export const useDialog = (
     useLockscreen(visible)
   }
 
-  if (props.closeOnPressEscape) {
-    useModal(
-      {
-        handleClose,
+  useModal(
+    {
+      handleClose: () => {
+        props.closeOnPressEscape && handleClose()
       },
-      visible
-    )
-  }
+    },
+    visible
+  )
 
   watch(
     () => props.modelValue,
