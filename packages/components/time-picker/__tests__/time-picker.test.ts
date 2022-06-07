@@ -7,6 +7,7 @@ import { rAF } from '@element-plus/test-utils/tick'
 import { ElFormItem } from '@element-plus/components/form'
 import TimePicker from '../src/time-picker'
 import Picker from '../src/common/picker.vue'
+import { extractDateFormat, extractTimeFormat } from '../src/common/date-utils'
 
 const _mount = (template: string, data, otherObj?) =>
   mount(
@@ -788,4 +789,38 @@ describe('TimePicker(range)', () => {
       expect(document.querySelector('.el-time-panel')).toBeTruthy()
     })
   })
+})
+
+describe('test Format fun', () => {
+  const formatList = [
+    ['YYYYMMDDHHmmss', 'YYYYMMDD', 'HHmmss'],
+    ['YYYYMMddhhmmss', 'YYYYMMdd', 'hhmmss'],
+    ['YYYY-MM-DD HH:mm', 'YYYY-MM-DD', 'HH:mm'],
+    ['YYYY-MM-DD-HH:mm', 'YYYY-MM-DD', '-HH:mm'],
+    ['YYYY-MM-dd HH:mm:ss', 'YYYY-MM-dd', 'HH:mm:ss'],
+    ['YYYY-MM-dd HH:mm:ss Z', 'YYYY-MM-dd', 'HH:mm:ss Z'],
+    ['YYYY-MM-dd HH:mm:ss A', 'YYYY-MM-dd', 'HH:mm:ss A'],
+    ['YYYY-MM-dd HH:mm:ss a', 'YYYY-MM-dd', 'HH:mm:ss a'],
+    ['YYYY-MM-dd~~ HH:mm\'ss" a', 'YYYY-MM-dd~~', 'HH:mm\'ss" a'],
+    ['YYYY年MM月DD日 hh时', 'YYYY年MM月DD日', 'hh时'],
+    ['YYYY年MM月DD日hh时', 'YYYY年MM月DD', '日hh时'],
+    [
+      '今年是YYYY年MM月DD日第hh时mm分钟ss秒新年快乐',
+      '今年是YYYY年MM月DD日',
+      '第hh时mm分钟ss秒新年快乐',
+    ],
+  ]
+  it.each(formatList)(
+    'expect extractDateFormat input $str output $date',
+    (str, date) => {
+      expect(extractDateFormat(str)).toBe(date)
+    }
+  )
+
+  it.each(formatList)(
+    'expect extractTimeFormat input $str output $time',
+    (str, date, time) => {
+      expect(extractTimeFormat(str)).toBe(time)
+    }
+  )
 })
