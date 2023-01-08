@@ -94,7 +94,6 @@ import {
   provide,
   ref,
   toRef,
-  unref,
 } from 'vue'
 import ElButton from '@element-plus/components/button'
 import ElTooltip from '@element-plus/components/tooltip'
@@ -175,9 +174,6 @@ export default defineComponent({
     }
 
     function onItemLeave() {
-      const contentEl = unref(contentRef)
-
-      contentEl?.focus()
       currentTabId.value = null
     }
 
