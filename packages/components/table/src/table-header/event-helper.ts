@@ -109,11 +109,17 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
   }
 
   const handleMouseMove = (event: MouseEvent, column: TableColumnCtx<T>) => {
-    if (column.children && column.children.length > 0) return
+    if (column.children && column.children.length > 0) {
+      draggingColumn.value = null
+      return
+    }
 
     const target = (event.target as HTMLElement)?.closest('th')
 
-    if (!column || !column.resizable) return
+    if (!column || !column.resizable) {
+      draggingColumn.value = null
+      return
+    }
 
     if (!dragging.value && props.border) {
       const rect = target.getBoundingClientRect()
