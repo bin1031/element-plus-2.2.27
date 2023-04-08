@@ -155,6 +155,7 @@
               ]"
               :disabled="selectDisabled"
               :autocomplete="autocomplete"
+              :rtl="isRTL"
               :style="{
                 marginLeft:
                   (prefixWidth && !selected.length) || tagInMultiLine
@@ -205,6 +206,7 @@
             :name="name"
             :autocomplete="autocomplete"
             :size="selectSize"
+            :rtl="isRTL"
             :disabled="selectDisabled"
             :readonly="readonly"
             :validate-event="false"
@@ -352,6 +354,7 @@ export default defineComponent({
       type: String,
       default: 'off',
     },
+
     automaticDropdown: Boolean,
     size: {
       type: String as PropType<ComponentSize>,
@@ -375,6 +378,7 @@ export default defineComponent({
       default: () => ({} as Partial<Options>),
     },
     remote: Boolean,
+    rtl: Boolean,
     loadingText: String,
     noMatchText: String,
     noDataText: String,
@@ -546,6 +550,9 @@ export default defineComponent({
       }
       if (props.disabled) {
         classList.push(nsSelect.m('disabled'))
+      }
+      if (props.rtl) {
+        classList.push(nsSelect.m('rtl'))
       }
       return classList
     })
