@@ -66,6 +66,8 @@
             v-if="showClose && clearIcon"
             :class="`${nsInput.e('icon')} clear-icon`"
             @click.stop="onClearIconClick"
+            @mouseenter="onClearEnter"
+            @mouseleave="onClearLeave"
           >
             <component :is="clearIcon" />
           </el-icon>
@@ -141,7 +143,9 @@
               [nsRange.e('close-icon--hidden')]: !showClose,
             },
           ]"
-          @click="onClearIconClick"
+          @click.stop="onClearIconClick"
+          @mouseenter="onClearEnter"
+          @mouseleave="onClearLeave"
         >
           <component :is="clearIcon" />
         </el-icon>
@@ -422,8 +426,7 @@ const parsedValue = computed(() => {
       dayOrDays = parseDate(props.modelValue, props.valueFormat, lang.value)!
     }
   }
-
-  if (pickerOptions.value.getRangeAvailableTime) {
+  if (pickerOptions.value.getRangeAvailableTime && !valueIsEmpty.value) {
     const availableResult = pickerOptions.value.getRangeAvailableTime(
       dayOrDays!
     )
@@ -474,11 +477,18 @@ const triggerIcon = computed(
 )
 
 const showClose = ref(false)
+const isInClose = ref(false)
 
-const onClearIconClick = (event: MouseEvent) => {
+const onClearEnter = () => {
+  isInClose.value = true
+}
+const onClearLeave = () => {
+  isInClose.value = false
+}
+
+const onClearIconClick = () => {
   if (props.readonly || pickerDisabled.value) return
   if (showClose.value) {
-    event.stopPropagation()
     focusOnInputBox()
     emitInput(null)
     emitChange(null, true)
@@ -501,6 +511,7 @@ const onMouseDownInput = async (event: MouseEvent) => {
     (event.target as HTMLElement)?.tagName !== 'INPUT' ||
     refInput.value.includes(document.activeElement as HTMLInputElement)
   ) {
+    if (isInClose.value) return
     pickerVisible.value = true
   }
 }
