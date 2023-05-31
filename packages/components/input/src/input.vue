@@ -371,7 +371,13 @@ const onceInitSizeTextarea = createOnceInitResize(resizeTextarea)
 
 const setNativeInputValue = () => {
   const input = _ref.value
-  if (!input || input.value === nativeInputValue.value) return
+  if (!input) return
+
+  if (props.formatter) {
+    input.value = props.formatter(nativeInputValue.value)
+    return
+  }
+  if (input.value === nativeInputValue.value) return
   input.value = nativeInputValue.value
 }
 
@@ -379,10 +385,8 @@ const handleInput = async (event: Event) => {
   recordCursor()
 
   let { value } = event.target as TargetElement
-
   if (props.formatter) {
     value = props.parser ? props.parser(value) : value
-    value = props.formatter(value)
   }
 
   // should not emit input during composition
@@ -402,7 +406,7 @@ const handleInput = async (event: Event) => {
   // ensure native input value is controlled
   // see: https://github.com/ElemeFE/element/issues/12850
   await nextTick()
-  setNativeInputValue()
+  !props.formatter && !props.parser && setNativeInputValue()
   setCursor()
 }
 
