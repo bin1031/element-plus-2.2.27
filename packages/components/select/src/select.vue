@@ -367,7 +367,10 @@ export default defineComponent({
     clearable: Boolean,
     filterable: Boolean,
     allowCreate: Boolean,
-    loading: Boolean,
+    loading: {
+      type: Boolean,
+      default: undefined,
+    },
     popperClass: {
       type: String,
       default: '',
