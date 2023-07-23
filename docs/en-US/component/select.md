@@ -161,6 +161,7 @@ select/value-key
 | validate-event                      | whether to trigger form validation                                                                                          | boolean                                    | true / false                                                                                              | true             |
 | placement                           | position of dropdown                                                                                                        | string                                     | top/top-start/top-end/bottom/bottom-start/bottom-end/left/left-start/left-end/right/right-start/right-end | bottom-start     |
 | max-collapse-tags ^(2.3.0)          | The max tags number to be shown. To use this, `collapse-tags` must be true                                                  | number                                     | —                                                                                                         | 1                |
+| option-horizontal                   | dropdown options displayed horizontally                                                                                     | boolean                                    | true / false                                                                                              | false            |
 
 :::warning
 
