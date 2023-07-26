@@ -267,6 +267,7 @@ import { panelDateRangeProps } from '../props/panel-date-range'
 import { useRangePicker } from '../composables/use-range-picker'
 import { getDefaultValue, isValidRange } from '../utils'
 import DateTable from './basic-date-table.vue'
+import type { Ref } from 'vue'
 
 import type { Dayjs } from 'dayjs'
 
@@ -298,8 +299,10 @@ const {
 const shortcuts = toRef(pickerBase.props, 'shortcuts')
 const defaultValue = toRef(pickerBase.props, 'defaultValue')
 const { lang } = useLocale()
-const leftDate = ref<Dayjs>(dayjs().locale(lang.value))
-const rightDate = ref<Dayjs>(dayjs().locale(lang.value).add(1, unit))
+const leftDate: Ref<Dayjs> = ref<Dayjs>(dayjs().locale(lang.value))
+const rightDate: Ref<Dayjs> = ref<Dayjs>(
+  dayjs().locale(lang.value).add(1, unit)
+)
 
 const {
   minDate,
@@ -601,8 +604,7 @@ const handleTimeInput = (value: string | null, type: ChangeType) => {
         .hour(parsedValueD.hour())
         .minute(parsedValueD.minute())
         .second(parsedValueD.second())
-      rightDate.value = maxDate.value
-      if (maxDate.value && maxDate.value.isBefore(minDate.value)) {
+      if (!minDate.value || maxDate.value.isBefore(minDate.value)) {
         minDate.value = maxDate.value
       }
     }
@@ -612,10 +614,8 @@ const handleTimeInput = (value: string | null, type: ChangeType) => {
 const handleTimeChange = (value: string | null, type: ChangeType) => {
   timeUserInput.value[type] = null
   if (type === 'min') {
-    leftDate.value = minDate.value!
     minTimePickerVisible.value = false
   } else {
-    rightDate.value = maxDate.value!
     maxTimePickerVisible.value = false
   }
 }
@@ -636,7 +636,12 @@ const handleMinTimePick = (value: Dayjs, visible: boolean, first: boolean) => {
 
   if (!maxDate.value || maxDate.value.isBefore(minDate.value)) {
     maxDate.value = minDate.value
-    rightDate.value = value
+    if (value) {
+      rightDate.value = rightDate.value
+        .hour(value.hour())
+        .minute(value.minute())
+        .second(value.second())
+    }
   }
 }
 
@@ -660,6 +665,12 @@ const handleMaxTimePick = (
 
   if (maxDate.value && maxDate.value.isBefore(minDate.value)) {
     minDate.value = maxDate.value
+    if (value) {
+      leftDate.value = leftDate.value
+        .hour(value.hour())
+        .minute(value.minute())
+        .second(value.second())
+    }
   }
 }
 

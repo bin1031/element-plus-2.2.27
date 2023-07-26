@@ -760,4 +760,32 @@ describe('Datetimerange', () => {
     expect(startInput.element.value).toBe('')
     expect(endInput.element.value).toBe('')
   })
+
+  it('time input and show current month', async () => {
+    const value = ref([
+      new Date(2000, 10, 10, 10, 10),
+      new Date(2000, 10, 10, 10, 10),
+    ])
+    const wrapper = _mount(() => (
+      <DatePicker v-model={value.value} type="datetimerange" />
+    ))
+
+    const input = wrapper.find('input')
+    await input.trigger('focus')
+
+    const rightPanelHeader = document.querySelector(
+      '.el-date-range-picker__content.is-right .el-date-range-picker__header'
+    ) as HTMLElement
+    const pickers = document.querySelectorAll(
+      '.el-date-range-picker__time-header .el-date-range-picker__editors-wrap'
+    )
+    const endTimeInput = pickers[1].querySelector(
+      '.el-date-range-picker__time-picker-wrap:nth-child(2) input'
+    ) as HTMLInputElement
+    endTimeInput.value = ''
+    triggerEvent(endTimeInput, 'input', true)
+    triggerEvent(endTimeInput, 'change', true)
+    await nextTick()
+    expect(rightPanelHeader.innerHTML).contains('2000').contains('December')
+  })
 })
