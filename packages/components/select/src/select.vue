@@ -279,7 +279,7 @@ import {
 import { useResizeObserver } from '@vueuse/core'
 import { placements } from '@popperjs/core'
 import { ClickOutside } from '@element-plus/directives'
-import { useFocus, useLocale, useNamespace } from '@element-plus/hooks'
+import { useFocus, useNamespace } from '@element-plus/hooks'
 import ElInput from '@element-plus/components/input'
 import ElTooltip, {
   useTooltipContentProps,
@@ -290,6 +290,7 @@ import ElIcon from '@element-plus/components/icon'
 import { CHANGE_EVENT, UPDATE_MODEL_EVENT } from '@element-plus/constants'
 import { iconPropType, isIOS, isValidComponentSize } from '@element-plus/utils'
 import { ArrowDown, CircleClose } from '@element-plus/icons-vue'
+import { useGlobalComponentSettings } from '@element-plus/components/config-provider'
 import ElOption from './option.vue'
 import ElSelectMenu from './select-dropdown.vue'
 import { useSelect, useSelectStates } from './useSelect'
@@ -430,7 +431,8 @@ export default defineComponent({
   setup(props, ctx) {
     const nsSelect = useNamespace('select')
     const nsInput = useNamespace('input')
-    const { t } = useLocale()
+    const { locale } = useGlobalComponentSettings('select')
+    const { t } = locale
     const states = useSelectStates(props)
     const {
       optionList,
