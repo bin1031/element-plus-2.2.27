@@ -87,6 +87,10 @@ export const dropdownProps = buildProps({
   buttonProps: {
     type: definePropType<ButtonProps>(Object),
   },
+  persistent: {
+    type: Boolean,
+    default: true,
+  },
   teleported: useTooltipContentProps.teleported,
 } as const)
 
