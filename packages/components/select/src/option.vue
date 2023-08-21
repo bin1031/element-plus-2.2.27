@@ -1,14 +1,16 @@
 <template>
-  <li
-    v-show="visible"
-    :class="containerKls"
-    @mouseenter="hoverItem"
-    @click.stop="selectOptionClick"
-  >
-    <slot>
-      <span>{{ currentLabel }}</span>
-    </slot>
-  </li>
+  <div v-show="showItem">
+    <li
+      v-show="visible"
+      :class="containerKls"
+      @mouseenter="hoverItem"
+      @click.stop="selectOptionClick"
+    >
+      <slot>
+        <span>{{ currentLabel }}</span>
+      </slot>
+    </li>
+  </div>
 </template>
 
 <script lang="ts">
@@ -41,6 +43,10 @@ export default defineComponent({
     disabled: {
       type: Boolean,
       default: false,
+    },
+    showItem: {
+      type: Boolean,
+      default: true,
     },
   },
 
