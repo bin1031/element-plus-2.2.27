@@ -41,6 +41,7 @@ export default defineComponent({
     const label = this.cell?.children?.label?.() || item.label
     const content = this.cell?.children?.default?.()
     const span = item.span
+    const rowspan = item.rowspan
     const align = item.align ? `is-${item.align}` : ''
     const labelAlign = item.labelAlign ? `is-${item.labelAlign}` : '' || align
     const className = item.className
@@ -66,6 +67,7 @@ export default defineComponent({
               labelClassName,
             ],
             colSpan: isVertical ? span : 1,
+            rowspan: isVertical ? 1 : rowspan,
           },
           label
         )
@@ -83,6 +85,7 @@ export default defineComponent({
               className,
             ],
             colSpan: isVertical ? span : span * 2 - 1,
+            rowspan: isVertical ? rowspan * 2 - 1 : rowspan,
           },
           content
         )
@@ -93,6 +96,7 @@ export default defineComponent({
             style,
             class: [ns.e('cell'), align],
             colSpan: span,
+            rowspan,
           },
           [
             !isNil(label)
