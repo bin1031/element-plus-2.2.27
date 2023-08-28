@@ -1,5 +1,7 @@
 import {
+  Teleport,
   computed,
+  createVNode,
   defineComponent,
   getCurrentInstance,
   nextTick,
@@ -28,7 +30,7 @@ import TabNav from './tab-nav'
 
 import type { TabNavInstance } from './tab-nav'
 import type { TabsPaneContext } from './constants'
-import type { ExtractPropTypes } from 'vue'
+import type { ExtractPropTypes, FunctionalComponent, VNode } from 'vue'
 import type { Awaitable } from '@element-plus/utils'
 
 export type TabPaneName = string | number
@@ -143,7 +145,11 @@ export default defineComponent({
       emit('edit', undefined, 'add')
       emit('tabAdd')
     }
-
+    const TabNavRenderer: FunctionalComponent<{
+      container: VNode
+    }> = (props, { slots }) => {
+      return <Teleport to={props.container.el}>{slots.default?.()}</Teleport>
+    }
     useDeprecated(
       {
         from: '"activeName"',
@@ -205,21 +211,31 @@ export default defineComponent({
       const header = (
         <div class={[ns.e('header'), ns.is(props.tabPosition)]}>
           {newButton}
-          <TabNav
-            ref={nav$}
-            currentName={currentName.value}
-            editable={props.editable}
-            type={props.type}
-            panes={panes.value}
-            stretch={props.stretch}
-            onTabClick={handleTabClick}
-            onTabRemove={handleTabRemove}
-          />
         </div>
       )
 
       const panels = (
         <div class={ns.e('content')}>{renderSlot(slots, 'default')}</div>
+      )
+
+      const hasLabelSlot = panes.value.some((pane) => pane.slots.label)
+      const tabNav = (
+        <TabNavRenderer container={header}>
+          {createVNode(
+            TabNav,
+            {
+              ref: nav$,
+              currentName: currentName.value,
+              editable: props.editable,
+              type: props.type,
+              panes: panes.value,
+              stretch: props.stretch,
+              onTabClick: handleTabClick,
+              onTabRemove: handleTabRemove,
+            },
+            { $stable: !hasLabelSlot }
+          )}
+        </TabNavRenderer>
       )
 
       return (
@@ -236,6 +252,7 @@ export default defineComponent({
           {...props.tabPosition !== 'bottom'
             ? [header, panels]
             : [panels, header]}
+          {tabNav}
         </div>
       )
     }
