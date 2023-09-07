@@ -111,31 +111,25 @@ import {
 import { useMonthRangeHeader } from '../composables/use-month-range-header'
 import { useRangePicker } from '../composables/use-range-picker'
 import MonthTable from './basic-month-table.vue'
-
 import type { Dayjs } from 'dayjs'
-
 defineOptions({
   name: 'DatePickerMonthRange',
 })
-
 const props = defineProps(panelMonthRangeProps)
 const emit = defineEmits(panelMonthRangeEmits)
 const unit = 'year'
-
 const { lang } = useLocale()
 const pickerBase = inject('EP_PICKER_BASE') as any
 const { shortcuts, disabledDate, format } = pickerBase.props
 const defaultValue = toRef(pickerBase.props, 'defaultValue')
 const leftDate = ref(dayjs().locale(lang.value))
 const rightDate = ref(dayjs().locale(lang.value).add(1, unit))
-
 const {
   minDate,
   maxDate,
   rangeState,
   ppNs,
   drpNs,
-
   handleChangeRange,
   handleRangeConfirm,
   handleShortcutClick,
@@ -147,9 +141,7 @@ const {
   unit,
   onParsedValueChanged,
 })
-
 const hasShortcuts = computed(() => !!shortcuts.length)
-
 const {
   leftPrevYear,
   rightNextYear,
@@ -164,16 +156,13 @@ const {
   leftDate,
   rightDate,
 })
-
 const enableYearArrow = computed(() => {
   return props.unlinkPanels && rightYear.value > leftYear.value + 1
 })
-
 type RangePickValue = {
   minDate: Dayjs
   maxDate: Dayjs
 }
-
 const handleRangePick = (val: RangePickValue, close = true) => {
   // const defaultTime = props.defaultTime || []
   // const minDate_ = modifyWithTimeString(val.minDate, defaultTime[0])
@@ -184,17 +173,18 @@ const handleRangePick = (val: RangePickValue, close = true) => {
   if (maxDate.value === maxDate_ && minDate.value === minDate_) {
     return
   }
+  emit('calendar-change', [
+    minDate_.toDate(),
+    maxDate_ && maxDate_.toDate(),
+  ])
   maxDate.value = maxDate_
   minDate.value = minDate_
-
   if (!close) return
   handleRangeConfirm()
 }
-
 const formatToString = (days: Dayjs[]) => {
   return days.map((day) => day.format(format))
 }
-
 function onParsedValueChanged(
   minDate: Dayjs | undefined,
   maxDate: Dayjs | undefined
@@ -208,6 +198,5 @@ function onParsedValueChanged(
     rightDate.value = leftDate.value.add(1, unit)
   }
 }
-
 emit('set-picker-option', ['formatToString', formatToString])
 </script>
