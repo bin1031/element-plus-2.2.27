@@ -1,5 +1,4 @@
 import {
-  Teleport,
   computed,
   createVNode,
   defineComponent,
@@ -30,7 +29,7 @@ import TabNav from './tab-nav'
 
 import type { TabNavInstance } from './tab-nav'
 import type { TabsPaneContext } from './constants'
-import type { ExtractPropTypes, FunctionalComponent, VNode } from 'vue'
+import type { ExtractPropTypes } from 'vue'
 import type { Awaitable } from '@element-plus/utils'
 
 export type TabPaneName = string | number
@@ -145,11 +144,6 @@ export default defineComponent({
       emit('edit', undefined, 'add')
       emit('tabAdd')
     }
-    const TabNavRenderer: FunctionalComponent<{
-      container: VNode
-    }> = (props, { slots }) => {
-      return <Teleport to={props.container.el}>{slots.default?.()}</Teleport>
-    }
     useDeprecated(
       {
         from: '"activeName"',
@@ -208,19 +202,14 @@ export default defineComponent({
           </span>
         ) : null
 
-      const header = (
-        <div class={[ns.e('header'), ns.is(props.tabPosition)]}>
-          {newButton}
-        </div>
-      )
-
       const panels = (
         <div class={ns.e('content')}>{renderSlot(slots, 'default')}</div>
       )
 
       const hasLabelSlot = panes.value.some((pane) => pane.slots.label)
-      const tabNav = (
-        <TabNavRenderer container={header}>
+      const header = (
+        <div class={[ns.e('header'), ns.is(props.tabPosition)]}>
+          {newButton}
           {createVNode(
             TabNav,
             {
@@ -235,7 +224,7 @@ export default defineComponent({
             },
             { $stable: !hasLabelSlot }
           )}
-        </TabNavRenderer>
+        </div>
       )
 
       return (
@@ -249,10 +238,8 @@ export default defineComponent({
             },
           ]}
         >
-          {...props.tabPosition !== 'bottom'
-            ? [header, panels]
-            : [panels, header]}
-          {tabNav}
+          {panels}
+          {header}
         </div>
       )
     }
