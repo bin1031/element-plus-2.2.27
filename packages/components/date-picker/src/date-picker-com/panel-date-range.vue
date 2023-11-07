@@ -679,7 +679,6 @@ const handleClear = () => {
     unlinkPanels: props.unlinkPanels,
   })[0]
   rightDate.value = leftDate.value.add(1, 'month')
-  emit('pick', null)
 }
 
 const formatToString = (value: Dayjs | Dayjs[]) => {
