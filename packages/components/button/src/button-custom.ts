@@ -40,6 +40,7 @@ export function useButtonCustomStyle(props: ButtonProps) {
           'active-bg-color': activeBgColor,
           'active-text-color': `var(${ns.cssVarName('color-white')})`,
           'active-border-color': activeBgColor,
+          'outline-color': activeBgColor,
         })
 
         if (_disabled.value) {
@@ -69,6 +70,7 @@ export function useButtonCustomStyle(props: ButtonProps) {
           'hover-border-color': hoverBgColor,
           'active-bg-color': activeBgColor,
           'active-border-color': activeBgColor,
+          'outline-color': activeBgColor,
         })
 
         if (_disabled.value) {
