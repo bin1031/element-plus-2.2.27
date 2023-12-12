@@ -18,7 +18,8 @@
         :disabled="isDisabled"
         :true-value="trueLabel"
         :false-value="falseLabel"
-        @change="handleChange"
+        :value="trueLabel"
+        @change="handleTrueFalseLabelChange"
         @focus="isFocused = true"
         @blur="isFocused = false"
         @click.stop
@@ -72,6 +73,7 @@ const {
   hasOwnLabel,
   model,
   handleChange,
+  handleTrueFalseLabelChange,
   onClickRoot,
 } = useCheckbox(props, slots)
 

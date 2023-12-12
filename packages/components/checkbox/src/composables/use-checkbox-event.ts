@@ -1,6 +1,6 @@
 import { computed, getCurrentInstance, inject, nextTick, watch } from 'vue'
+import { debugWarn, isArray } from '@element-plus/utils'
 import { useFormItem } from '@element-plus/components/form'
-import { debugWarn } from '@element-plus/utils'
 import { checkboxGroupContextKey } from '../constants'
 
 import type { useFormItemInputId } from '@element-plus/components/form'
@@ -48,6 +48,22 @@ export const useCheckboxEvent = (
     emit('change', getLabeledValue(target.checked), e)
   }
 
+  function handleTrueFalseLabelChange(e: Event) {
+    if (isLimitExceeded.value) return
+    const target = e.target as HTMLInputElement
+    const labeledValue = getLabeledValue(target.checked)
+    if (isArray(model.value)) {
+      if (!target.checked) {
+        model.value.push(labeledValue)
+      } else {
+        model.value = model.value.filter(
+          (item: string) => props.falseLabel !== item
+        )
+      }
+    }
+    emit('change', getLabeledValue(target.checked), e)
+  }
+
   async function onClickRoot(e: MouseEvent) {
     if (isLimitExceeded.value) return
 
@@ -81,6 +97,7 @@ export const useCheckboxEvent = (
   )
 
   return {
+    handleTrueFalseLabelChange,
     handleChange,
     onClickRoot,
   }

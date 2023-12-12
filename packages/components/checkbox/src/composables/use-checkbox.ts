@@ -42,13 +42,14 @@ export const useCheckbox = (
     disableIdGeneration: hasOwnLabel,
     disableIdManagement: isGroup,
   })
-  const { handleChange, onClickRoot } = useCheckboxEvent(props, {
-    model,
-    isLimitExceeded,
-    hasOwnLabel,
-    isDisabled,
-    isLabeledByFormItem,
-  })
+  const { handleChange, onClickRoot, handleTrueFalseLabelChange } =
+    useCheckboxEvent(props, {
+      model,
+      isLimitExceeded,
+      hasOwnLabel,
+      isDisabled,
+      isLabeledByFormItem,
+    })
 
   setStoreValue(props, { model })
 
@@ -64,5 +65,6 @@ export const useCheckbox = (
     model,
     handleChange,
     onClickRoot,
+    handleTrueFalseLabelChange,
   }
 }
