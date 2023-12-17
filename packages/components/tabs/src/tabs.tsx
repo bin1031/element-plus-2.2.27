@@ -28,7 +28,7 @@ import TabNav from './tab-nav'
 
 import type { TabNavInstance } from './tab-nav'
 import type { TabsPaneContext } from './constants'
-import type { ExtractPropTypes } from 'vue'
+import type { ExtractPropTypes, FunctionalComponent, VNode } from 'vue'
 import type { Awaitable } from '@element-plus/utils'
 
 export type TabPaneName = string | number
@@ -90,7 +90,7 @@ const Tabs = defineComponent({
 
     const {
       children: panes,
-      addChild: registerPane,
+      addChild: sortPane,
       removeChild: unregisterPane,
     } = useOrderedChildren<TabsPaneContext>(getCurrentInstance()!, 'ElTabPane')
 
@@ -169,14 +169,21 @@ const Tabs = defineComponent({
     provide(tabsRootContextKey, {
       props,
       currentName,
-      registerPane,
+      registerPane: (pane: TabsPaneContext) => {
+        panes.value.push(pane)
+      },
+      sortPane,
       unregisterPane,
     })
 
     expose({
       currentName,
     })
-
+    const TabNavRenderer: FunctionalComponent<{ render: () => VNode }> = ({
+      render,
+    }) => {
+      return render()
+    }
     return () => {
       const addSlot = slots.addIcon
       const newButton =
@@ -202,15 +209,19 @@ const Tabs = defineComponent({
       const header = (
         <div class={[ns.e('header'), ns.is(props.tabPosition)]}>
           {newButton}
-          <TabNav
-            ref={nav$}
-            currentName={currentName.value}
-            editable={props.editable}
-            type={props.type}
-            panes={panes.value}
-            stretch={props.stretch}
-            onTabClick={handleTabClick}
-            onTabRemove={handleTabRemove}
+          <TabNavRenderer
+            render={() => (
+              <TabNav
+                ref={nav$}
+                currentName={currentName.value}
+                editable={props.editable}
+                type={props.type}
+                panes={panes.value}
+                stretch={props.stretch}
+                onTabClick={handleTabClick}
+                onTabRemove={handleTabRemove}
+              />
+            )}
           />
         </div>
       )
@@ -230,9 +241,8 @@ const Tabs = defineComponent({
             },
           ]}
         >
-          {...props.tabPosition !== 'bottom'
-            ? [header, panels]
-            : [panels, header]}
+          {panels}
+          {header}
         </div>
       )
     }
