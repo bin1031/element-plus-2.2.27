@@ -30,3 +30,4 @@ export const drawerProps = buildProps({
 export type DrawerProps = ExtractPropTypes<typeof drawerProps>
 
 export const drawerEmits = dialogEmits
+export type DrawerEmits = typeof drawerEmits

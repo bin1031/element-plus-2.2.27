@@ -312,7 +312,7 @@ import ElTooltip, {
 import ElScrollbar from '@element-plus/components/scrollbar'
 import ElTag, { tagProps } from '@element-plus/components/tag'
 import ElIcon from '@element-plus/components/icon'
-import { CHANGE_EVENT, UPDATE_MODEL_EVENT } from '@element-plus/constants'
+import { UPDATE_MODEL_EVENT } from '@element-plus/constants'
 import { iconPropType, isIOS, isValidComponentSize } from '@element-plus/utils'
 import { ArrowDown, CircleClose } from '@element-plus/icons-vue'
 import ElOption from './option.vue'
@@ -320,6 +320,7 @@ import ElSelectMenu from './select-dropdown.vue'
 import { useSelect, useSelectStates } from './useSelect'
 import { selectKey } from './token'
 import ElOptions from './options'
+import { selectEmits } from './select'
 
 import type { PropType } from 'vue'
 import type { ComponentSize } from '@element-plus/constants'
@@ -557,15 +558,7 @@ export default defineComponent({
       default: undefined,
     },
   },
-  emits: [
-    UPDATE_MODEL_EVENT,
-    CHANGE_EVENT,
-    'remove-tag',
-    'clear',
-    'visible-change',
-    'focus',
-    'blur',
-  ],
+  emits: selectEmits,
 
   setup(props, ctx) {
     const nsSelect = useNamespace('select')
