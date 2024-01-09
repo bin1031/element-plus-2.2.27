@@ -373,6 +373,18 @@ const focus = (focusStartInput = true, isIgnoreFocusEvent = false) => {
   }
 }
 
+const blur = (focusStartInput = true, isIgnoreFocusEvent = false) => {
+  ignoreFocusEvent = isIgnoreFocusEvent
+  const [leftInput, rightInput] = unref(refInput)
+  let input = leftInput
+  if (!focusStartInput && isRangeInput.value) {
+    input = rightInput
+  }
+  if (input) {
+    input.blur()
+  }
+}
+
 const handleFocusInput = (e?: FocusEvent) => {
   if (
     props.readonly ||
@@ -748,6 +760,10 @@ defineExpose({
    * @description focus input box.
    */
   focus,
+  /**
+   * @description blur input box.
+   */
+  blur,
   /**
    * @description emit focus event
    */
