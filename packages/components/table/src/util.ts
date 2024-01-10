@@ -259,7 +259,8 @@ export function compose(...funcs) {
 export function toggleRowStatus<T>(
   statusArr: T[],
   row: T,
-  newVal: boolean
+  newVal: boolean,
+  selectIsolated?: boolean
 ): boolean {
   let changed = false
   const index = statusArr.indexOf(row)
@@ -272,11 +273,6 @@ export function toggleRowStatus<T>(
       statusArr.splice(index, 1)
     }
     changed = true
-    if (isArray(row.children)) {
-      row.children.forEach((item) => {
-        toggleRowStatus(statusArr, item, newVal ?? !included)
-      })
-    }
   }
 
   if (isBoolean(newVal)) {
@@ -288,6 +284,13 @@ export function toggleRowStatus<T>(
   } else {
     included ? toggleStatus('remove') : toggleStatus('add')
   }
+
+  if (isArray(row.children) && !selectIsolated) {
+    row.children.forEach((item) => {
+      toggleRowStatus(statusArr, item, newVal ?? !included)
+    })
+  }
+
   return changed
 }
 
