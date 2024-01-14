@@ -33,6 +33,14 @@ export const tagProps = buildProps({
     default: '',
   },
   /**
+   * @description custom tag color, automatically calculate color for dark, light, and plain themes.
+   */
+  customTagColor: String,
+  /**
+   * @description dark mode, which automatically converts `color` to dark mode colors
+   */
+  dark: Boolean,
+  /**
    * @description size of Tag
    */
   size: {
