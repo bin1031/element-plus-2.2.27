@@ -682,12 +682,6 @@ const handleClear = () => {
   emit('pick', null)
 }
 
-const formatToString = (value: Dayjs | Dayjs[]) => {
-  return isArray(value)
-    ? value.map((_) => _.format(format))
-    : value.format(format)
-}
-
 const parseUserInput = (value: Dayjs | Dayjs[]) => {
   return isArray(value)
     ? value.map((_) => dayjs(_, format).locale(lang.value))
@@ -720,6 +714,5 @@ function onParsedValueChanged(
 
 emit('set-picker-option', ['isValidValue', isValidValue])
 emit('set-picker-option', ['parseUserInput', parseUserInput])
-emit('set-picker-option', ['formatToString', formatToString])
 emit('set-picker-option', ['handleClear', handleClear])
 </script>
