@@ -1,5 +1,6 @@
 import {
   computed,
+  createVNode,
   defineComponent,
   getCurrentInstance,
   nextTick,
@@ -138,7 +139,6 @@ const Tabs = defineComponent({
       emit('edit', undefined, 'add')
       emit('tabAdd')
     }
-
     useDeprecated(
       {
         from: '"activeName"',
@@ -212,24 +212,29 @@ const Tabs = defineComponent({
           </span>
         ) : null
 
+      const panels = (
+        <div class={ns.e('content')}>{renderSlot(slots, 'default')}</div>
+      )
+
+      const hasLabelSlot = panes.value.some((pane) => pane.slots.label)
       const header = (
         <div class={[ns.e('header'), ns.is(props.tabPosition)]}>
           {newButton}
-          <TabNav
-            ref={nav$}
-            currentName={currentName.value}
-            editable={props.editable}
-            type={props.type}
-            panes={panes.value}
-            stretch={props.stretch}
-            onTabClick={handleTabClick}
-            onTabRemove={handleTabRemove}
-          />
+          {createVNode(
+            TabNav,
+            {
+              ref: nav$,
+              currentName: currentName.value,
+              editable: props.editable,
+              type: props.type,
+              panes: panes.value,
+              stretch: props.stretch,
+              onTabClick: handleTabClick,
+              onTabRemove: handleTabRemove,
+            },
+            { $stable: !hasLabelSlot }
+          )}
         </div>
-      )
-
-      const panels = (
-        <div class={ns.e('content')}>{renderSlot(slots, 'default')}</div>
       )
 
       return (
@@ -243,9 +248,8 @@ const Tabs = defineComponent({
             },
           ]}
         >
-          {...props.tabPosition !== 'bottom'
-            ? [header, panels]
-            : [panels, header]}
+          {panels}
+          {header}
         </div>
       )
     }
