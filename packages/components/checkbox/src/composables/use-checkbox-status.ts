@@ -8,6 +8,18 @@ import type { ComponentInternalInstance } from 'vue'
 import type { CheckboxProps } from '../checkbox'
 import type { CheckboxModel } from '../composables'
 
+function supportIsCheck(
+  value: any[],
+  props: CheckboxProps,
+  key: keyof typeof props
+) {
+  if (isObject(props[key])) {
+    return value.map(toRaw).some((o) => isEqual(o, props[key]))
+  } else {
+    return value.map(toRaw).includes(props[key])
+  }
+}
+
 export const useCheckboxStatus = (
   props: CheckboxProps,
   slots: ComponentInternalInstance['slots'],
@@ -20,10 +32,10 @@ export const useCheckboxStatus = (
     if (isBoolean(value)) {
       return value
     } else if (isArray(value)) {
-      if (isObject(props.label)) {
-        return value.map(toRaw).some((o) => isEqual(o, props.label))
+      if (props.trueLabel) {
+        return supportIsCheck(value, props, 'trueLabel')
       } else {
-        return value.map(toRaw).includes(props.label)
+        return supportIsCheck(value, props, 'label')
       }
     } else if (value !== null && value !== undefined) {
       return value === props.trueLabel
