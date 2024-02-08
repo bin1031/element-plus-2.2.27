@@ -160,6 +160,10 @@ export const paginationProps = buildProps({
    * @description whether to hide when there's only one page
    */
   hideOnSinglePage: Boolean,
+  /**
+   * @description which element the size dropdown appends to.
+   */
+  appendSizeTo: String,
 } as const)
 export type PaginationProps = ExtractPropTypes<typeof paginationProps>
 
@@ -388,6 +392,7 @@ export default defineComponent({
           disabled: props.disabled,
           teleported: props.teleported,
           size: props.small ? 'small' : 'default',
+          appendSizeTo: props.appendSizeTo,
         }),
         slot: slots?.default?.() ?? null,
         total: h(Total, { total: isAbsent(props.total) ? 0 : props.total }),

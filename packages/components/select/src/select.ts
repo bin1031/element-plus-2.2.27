@@ -226,4 +226,11 @@ export const SelectProps = buildProps({
     type: String,
     default: undefined,
   },
+  /**
+   * @description which element the selection dropdown appends to
+   */
+  appendTo: {
+    type: String,
+    default: undefined,
+  },
 })

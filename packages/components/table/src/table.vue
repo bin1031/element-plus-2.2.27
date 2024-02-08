@@ -53,6 +53,7 @@
             :border="border"
             :default-sort="defaultSort"
             :store="store"
+            :append-filter-panel-to="appendFilterPanelTo"
             @set-drag-visible="setDragVisible"
           />
         </table>
@@ -86,6 +87,7 @@
               :border="border"
               :default-sort="defaultSort"
               :store="store"
+              :append-filter-panel-to="appendFilterPanelTo"
               @set-drag-visible="setDragVisible"
             />
             <table-body
