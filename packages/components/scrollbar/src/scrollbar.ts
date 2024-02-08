@@ -75,6 +75,13 @@ export const scrollbarProps = buildProps({
     default: 20,
   },
   /**
+   * @description Wrap tabindex
+   */
+  tabindex: {
+    type: [String, Number],
+    default: undefined,
+  },
+  /**
    * @description id of view
    */
   id: String,
