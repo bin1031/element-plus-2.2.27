@@ -1,4 +1,3 @@
-addIcon
 <template>
   <el-tabs
     v-model="editableTabsValue"

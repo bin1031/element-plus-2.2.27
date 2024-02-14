@@ -22,7 +22,6 @@ declare module '@vue/runtime-core' {
     Expand: typeof import('./.vitepress/vitepress/components/icons/expand.vue')['default']
     FeedbackSvg: typeof import('./.vitepress/vitepress/components/globals/design/feedback-svg.vue')['default']
     FigmaTemplateSvg: typeof import('./.vitepress/vitepress/components/globals/resources/figma-template-svg.vue')['default']
-    FigmaUiKitSvg: typeof import('./.vitepress/vitepress/components/globals/resources/figma-ui-kit-svg.vue')['default']
     FigmaVariablesSvg: typeof import('./.vitepress/vitepress/components/globals/resources/figma-variables-svg.vue')['default']
     GuideSvg: typeof import('./.vitepress/vitepress/components/home/svg/guide-svg.vue')['default']
     HomeCards: typeof import('./.vitepress/vitepress/components/home/home-cards.vue')['default']
@@ -111,4 +110,4 @@ declare module '@vue/runtime-core' {
   }
 }
 
-export {}
+export { }

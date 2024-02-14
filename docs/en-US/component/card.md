@@ -48,7 +48,6 @@ card/shadow
 :::
 
 ## API
-
 ### Attributes
 
 | Name                 | Description                                                    | Type                              | Default |

@@ -80,13 +80,16 @@ const config = reactive({
 .wrapper {
   display: flex;
 }
+
 .watermark {
   display: flex;
   flex: auto;
 }
+
 .demo {
   flex: auto;
 }
+
 .form {
   width: 330px;
   margin-left: 20px;

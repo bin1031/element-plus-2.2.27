@@ -807,6 +807,14 @@ export const useSelect = (props: ISelectProps, emit) => {
     setSelected()
   })
 
+  // computed style
+  // if in form and use statusIcon, the width of the icon needs to be subtracted, fix #13526
+  const selectTagsStyle = computed(() => ({
+    maxWidth: `${
+      unref(states.inputWidth) - 32 - (showStatusIconAndState.value ? 22 : 0)
+    }px`,
+    width: '100%',
+  }))
   return {
     inputId,
     contentId,

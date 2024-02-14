@@ -53,10 +53,12 @@
           position: relative;
           color: var(--text-color-lighter);
           transition: color var(--el-transition-duration);
+
           &.active {
             color: var(--brand-color);
           }
-          p{
+
+          p {
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
