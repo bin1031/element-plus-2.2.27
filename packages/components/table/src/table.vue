@@ -250,6 +250,7 @@ export default defineComponent({
       toggleAllSelection,
       toggleRowExpansion,
       clearSort,
+      clearTreeNode,
       sort,
     } = useUtils<Row>(store)
     const {
@@ -355,6 +356,7 @@ export default defineComponent({
        * @description sort Table manually. Property `prop` is used to set sort column, property `order` is used to set sort order
        */
       sort,
+      clearTreeNode,
       t,
       setDragVisible,
       context: table,
