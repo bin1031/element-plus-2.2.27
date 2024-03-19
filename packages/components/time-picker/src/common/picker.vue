@@ -496,7 +496,9 @@ const triggerIcon = computed(
 )
 
 const showClose = ref(false)
-
+  
+const clearIcon = computed(() => props.clearIcon);
+  
 const onClearIconClick = (event: MouseEvent) => {
   if (props.readonly || pickerDisabled.value) return
   if (showClose.value) {
