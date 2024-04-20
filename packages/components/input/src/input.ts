@@ -185,6 +185,34 @@ export const inputProps = buildProps({
     type: Boolean,
     default: false,
   },
+  /**
+   * @description plain text as Input prefix, only works when type is not 'textarea'
+   */
+  prefix: {
+    type: String,
+    default: undefined,
+  },
+  /**
+   * @description plain text as Input suffix, only works when type is not 'textarea'
+   */
+  suffix: {
+    type: String,
+    default: undefined,
+  },
+  /**
+   * @description plain text as Input prepend, only works when type is not 'textarea'
+   */
+  prepend: {
+    type: String,
+    default: undefined,
+  },
+  /**
+   * @description plain text as Input append, only works when type is not 'textarea'
+   */
+  append: {
+    type: String,
+    default: undefined,
+  },
 } as const)
 export type InputProps = ExtractPropTypes<typeof inputProps>
 

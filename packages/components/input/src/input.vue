@@ -10,15 +10,25 @@
     <!-- input -->
     <template v-if="type !== 'textarea'">
       <!-- prepend slot -->
-      <div v-if="$slots.prepend" :class="nsInput.be('group', 'prepend')">
-        <slot name="prepend" />
+      <div
+        v-if="$slots.prepend || prepend"
+        :class="nsInput.be('group', 'prepend')"
+      >
+        <slot name="prepend">
+          <span>{{ prepend }}</span>
+        </slot>
       </div>
 
       <div ref="wrapperRef" :class="wrapperKls">
         <!-- prefix slot -->
-        <span v-if="$slots.prefix || prefixIcon" :class="nsInput.e('prefix')">
+        <span
+          v-if="$slots.prefix || prefix || prefixIcon"
+          :class="nsInput.e('prefix')"
+        >
           <span :class="nsInput.e('prefix-inner')">
-            <slot name="prefix" />
+            <slot name="prefix">
+              <span>{{ prefix }}</span>
+            </slot>
             <el-icon v-if="prefixIcon" :class="nsInput.e('icon')">
               <component :is="prefixIcon" />
             </el-icon>
@@ -58,7 +68,9 @@
             <template
               v-if="!showClear || !showPwdVisible || !isWordLimitVisible"
             >
-              <slot name="suffix" />
+              <slot name="suffix">
+                <span>{{ suffix }}</span>
+              </slot>
               <el-icon v-if="suffixIcon" :class="nsInput.e('icon')">
                 <component :is="suffixIcon" />
               </el-icon>
@@ -98,8 +110,13 @@
       </div>
 
       <!-- append slot -->
-      <div v-if="$slots.append" :class="nsInput.be('group', 'append')">
-        <slot name="append" />
+      <div
+        v-if="$slots.append || append"
+        :class="nsInput.be('group', 'append')"
+      >
+        <slot name="append">
+          <span>{{ append }}</span>
+        </slot>
       </div>
     </template>
 
@@ -208,24 +225,37 @@ const containerAttrs = computed(() => {
   return comboBoxAttrs
 })
 
-const containerKls = computed(() => [
-  props.type === 'textarea' ? nsTextarea.b() : nsInput.b(),
-  nsInput.m(inputSize.value),
-  nsInput.is('disabled', inputDisabled.value),
-  nsInput.is('exceed', inputExceed.value),
-  {
-    [nsInput.b('group')]: slots.prepend || slots.append,
-    [nsInput.bm('group', 'append')]: slots.append,
-    [nsInput.bm('group', 'prepend')]: slots.prepend,
-    [nsInput.m('prefix')]: slots.prefix || props.prefixIcon,
-    [nsInput.m('suffix')]:
-      slots.suffix || props.suffixIcon || props.clearable || props.showPassword,
-    [nsInput.bm('suffix', 'password-clear')]:
-      showClear.value && showPwdVisible.value,
-    [nsInput.b('hidden')]: props.type === 'hidden',
-  },
-  rawAttrs.class,
-])
+const containerKls = computed(() => {
+  const {
+    type,
+    prepend,
+    append,
+    prefix,
+    prefixIcon,
+    suffix,
+    suffixIcon,
+    clearable,
+    showPassword,
+  } = props
+  return [
+    type === 'textarea' ? nsTextarea.b() : nsInput.b(),
+    nsInput.m(inputSize.value),
+    nsInput.is('disabled', inputDisabled.value),
+    nsInput.is('exceed', inputExceed.value),
+    {
+      [nsInput.b('group')]: slots.prepend || slots.append || prepend || append,
+      [nsInput.bm('group', 'append')]: slots.append || append,
+      [nsInput.bm('group', 'prepend')]: slots.prepend || prepend,
+      [nsInput.m('prefix')]: slots.prefix || prefixIcon || prefix,
+      [nsInput.m('suffix')]:
+        slots.suffix || suffix || suffixIcon || clearable || showPassword,
+      [nsInput.bm('suffix', 'password-clear')]:
+        showClear.value && showPwdVisible.value,
+      [nsInput.b('hidden')]: type === 'hidden',
+    },
+    rawAttrs.class,
+  ]
+})
 
 const wrapperKls = computed(() => [
   nsInput.e('wrapper'),
@@ -321,6 +351,7 @@ const inputExceed = computed(
 const suffixVisible = computed(
   () =>
     !!slots.suffix ||
+    !!props.suffix ||
     !!props.suffixIcon ||
     showClear.value ||
     props.showPassword ||
