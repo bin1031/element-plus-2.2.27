@@ -59,6 +59,13 @@ export const inputProps = buildProps({
     default: 'text',
   },
   /**
+   * @description rows of input
+   */
+  rows: {
+    type: Number,
+    default: 1,
+  },
+  /**
    * @description control the resizability
    */
   resize: {
